@@ -7,16 +7,12 @@ import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
 import { fetchUserPlaces, updateUserPlaces } from './http.js';
 import Error from './components/Error.jsx';
+import { useFetch } from './hooks/userFetch.js';
 
 function App() {
   const selectedPlace = useRef();
 
-  const [userPlaces, setUserPlaces] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState();
-
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState();
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
@@ -34,8 +30,17 @@ function App() {
 
     fetchPlaces();
   }, []);
+  const {
+     fetchData:userPlaces,
+      isFetching,
+      error,
+      setIsFetching,
+      setFetchData:setUserPlaces,
+      setError
+   } = useFetch(fetchUserPlaces,[]); 
 
   function handleStartRemovePlace(place) {
+
     setModalIsOpen(true);
     selectedPlace.current = place;
   }
